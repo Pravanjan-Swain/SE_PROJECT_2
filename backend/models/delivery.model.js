@@ -1,15 +1,35 @@
 import mongoose from "mongoose";
 
-const deliveryLogSchema = new mongoose.Schema({
-  deliverer: { type: mongoose.Schema.Types.ObjectId, ref: 'Deliverer', required: true },
-  customer: { type: mongoose.Schema.Types.ObjectId, ref: 'Customer', required: true },
-  date: { type: Date, default: Date.now },
-  publications: [{
-    publication: { type: mongoose.Schema.Types.ObjectId, ref: 'Publication' },
-    copies: { type: Number, default: 1 }
-  }]
-});
+const deliverySchema = new mongoose.Schema({
+    subscription : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "Subscription",
+        required : true
+    },
+    deliverer: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Deliverer', 
+        required : true,
+    },
+    deliveryDate: { 
+        type: Date, 
+        required : true ,
+        default : Date.now
+    },
+    isDelivered : {
+        type : Boolean,
+        default : false
+    },
+    deliveryStatus : {
+        type : String,
+        enum : ['pending', 'delivered', 'failed', 'cancelled'],
+        default : 'pending',
+    },
+    failureReason : {
+        type : String,
+    }
+}, {timeStamps : true});
 
-const Delivery = mongoose.model('Delivery', deliveryLogSchema);
+const Delivery = mongoose.model('Delivery', deliverySchema);
 
 export default Delivery;

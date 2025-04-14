@@ -1,32 +1,32 @@
 import mongoose from "mongoose";
 
 const delivererSchema = new mongoose.Schema({
+    user : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "User",
+        required : true,
+    },
     name : {
         type : String,
         required : true
     },
-    username : {
-        type : String,
-        required : true,
-        unique : true
+    address : {
+        city : String,
+        street : String,
     },
-    password : {
-        type : String,
-        required : true,
+    isActive : {
+        type : Boolean,
+        default : true
     },
-    email : {
-        type : String,
-        required : true
+    registrationDate : {
+        type : Date,
+        default : Date.now
     },
-    Area : {
-        type : String,
-        required : true,
-    },
-    bankDetails : {
-        type : String,
-        required : true,
+    commissionRate : {
+        type : Number,
+        default : 0.25
     }
-});
+}, {timeStamps : true});
 
 const Deliverer = mongoose.model("Deliverer", delivererSchema);
 

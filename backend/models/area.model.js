@@ -5,14 +5,14 @@ const areaSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    managersId : [{
+    managerId : {
         type : Schema.Types.ObjectId, 
         ref : "Manager",
-    }],
-    deliverersId : [{
+    },
+    delivererId : {
         type : Schema.Types.ObjectId, 
-    }],
-    customersId : [{
+    },
+    customerId : [{
         type : String,
     }]
 });

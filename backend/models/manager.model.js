@@ -1,28 +1,28 @@
 import mongoose from "mongoose";
 
 const managerSchema = new mongoose.Schema({
+    user : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "User",
+        required : true,
+    },
     name : {
         type : String,
-        required : true
-    },
-    username : {
-        type : String,
-        required : true,
-        unique : true
-    },
-    password : {
-        type : String,
         required : true,
     },
-    email : {
-        type : String,
-        required : true
+    address : {
+        city : String,
+        street : String,
     },
-    Area : {
-        type : String,
-        required : true,
+    isActive : {
+        type : Boolean,
+        default : true
+    },
+    registrationDate : {
+        type : Date,
+        default : Date.now
     }
-})
+}, {timeStamps : true})
 
 const Manager = mongoose.model("Manager", managerSchema);
 
