@@ -1,57 +1,58 @@
 import jwt from "jsonwebtoken";
 
-const authenticate = async (req,res,next) => {
+export const authenticate = async (req, res, next) => {
   const token = req.cookies.jwt;
 
-  if(!token){
+  if (!token) {
     return res.status(401).json({
-      success : false,
-      message : "No token, authentication denied",
-    })
+      success: false,
+      message: "No token, authentication denied",
+    });
   }
 
-  try{
-    jwt.verify(token, process.env.JWT_SECRET, (err,decoded) => {
-      if(err){
+  try {
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
         return res.status(401).json({
-          success : false,
-          message : "Token is not valid"
-        })
+          success: false,
+          message: "Token is not valid",
+        });
       }
-  
+
       req.user = decoded.user;
       next();
-    })
-  }
-  catch(err){
+    });
+  } catch (err) {
     return res.status(401).json({
-      success : false,
-      message : "Token is not valid"
-    })
+      success: false,
+      message: "Token is not valid",
+    });
   }
-}
+};
 
-const authorize = (role) => {
-  return async (req,res,next) => {
-    try{
-      if(!req.user){
+export const authorize = (role) => {
+  return async (req, res, next) => {
+    try {
+      if (!req.user) {
         return res.status(401).json({
-          success : false,
-          message : "User not authenticated"
-        })
+          success: false,
+          message: "User not authenticated",
+        });
       }
-      
-      if(req.user.role !== role){
-        return res.status(403, "You do not have the permission to access this resourse");
+
+      if (req.user.role !== role) {
+        return res.status(403).json({
+          success: false,
+          message: "You do not have the permission to access this resource",
+        });
       }
 
       next();
-    }
-    catch(err){
+    } catch (err) {
       return res.status(401).json({
-        status : false,
-        message : "Server error"
-      })
+        success: false,
+        message: "Server error",
+      });
     }
-  }
-}
+  };
+};

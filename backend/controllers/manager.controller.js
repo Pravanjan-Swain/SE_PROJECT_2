@@ -6,7 +6,7 @@ import Deliverer from "../models/deliverer.model.js";
 import Delivery from "../models/delivery.model.js";
 import User from "../models/user.model.js";
 
-const addPublication = async (req,res) => {
+export const addPublication = async (req,res) => {
     try{
         const {name,language,description,price,type,frequency} = req.body;
         
@@ -38,7 +38,7 @@ const addPublication = async (req,res) => {
 }
 
 // I need publication id in url
-const updatePublication = async (req,res) => {
+export const updatePublication = async (req,res) => {
     try{
         const {name,language,description,price,type,frequency, isActive} = req.body;
 
@@ -79,7 +79,7 @@ const updatePublication = async (req,res) => {
     }
 }
 
-const getAllPublications = async (req,res) => {
+export const getAllPublications = async (req,res) => {
     try{
         const publications = await Publication.find();
 
@@ -98,7 +98,7 @@ const getAllPublications = async (req,res) => {
     }
 }
 
-const getPublication = async (req,res) => {
+export const getPublication = async (req,res) => {
     try{
         const publication = await Publication.findById(req.params.id);
 
@@ -124,7 +124,7 @@ const getPublication = async (req,res) => {
     }
 }
 
-const getAllCustomers = async (req,res) => {
+export const getAllCustomers = async (req,res) => {
     try{
         const manager = await Manager.findOne({user : req.user.id});
 
@@ -167,7 +167,7 @@ const getAllCustomers = async (req,res) => {
     }
 };
 
-const getCustomer = async (req,res) => {
+export const getCustomer = async (req,res) => {
     try{
         const customer = await Customer.findById(req.params.id).populate({
             path : "user",
@@ -213,7 +213,7 @@ const getCustomer = async (req,res) => {
     }
 }
 
-const getAllDeliverers = async (req,res) => {
+export const getAllDeliverers = async (req,res) => {
     try{
 
         const manager = await Manager.findOne({user : req.user.id});
@@ -258,7 +258,7 @@ const getAllDeliverers = async (req,res) => {
 
 
 // TODO getDeliverer and all its deliveries, and commision paid to it
-const getDeliverer = async (req,res) => {
+export const getDeliverer = async (req,res) => {
     try{
         const deliverer = await Deliverer.findById(req.params.id).populate({
             path : "user",
@@ -280,7 +280,7 @@ const getDeliverer = async (req,res) => {
 }
 
 // Deactivate deliverer account
-const deactivateDeliverer = async (req,res) => {
+export const deactivateDeliverer = async (req,res) => {
     try{
         const deliverer = await Deliverer.findById(req.params.id);
 
@@ -322,7 +322,7 @@ const deactivateDeliverer = async (req,res) => {
 
 
 // // Deactivate customer account
-const deactivateCustomer = async (req,res) => {
+export const deactivateCustomer = async (req,res) => {
     try{
         const customer = await Customer.findById(req.params.id);
         if(!customer){

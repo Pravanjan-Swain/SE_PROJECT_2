@@ -5,7 +5,7 @@ import Customer from "../models/customer.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-const login = async (req,res) => {
+export const login = async (req,res) => {
     try{
         const {username,password} = req.body;
         let user = await User.findOne({
@@ -99,7 +99,7 @@ const login = async (req,res) => {
 };
 
 
-const register = async (req,res) => {
+export const register = async (req,res) => {
     try{
         const {username,password,role,email,contactNo,name,address} = req.body;
         let user = await User.findOne({$or : [{email},{username}]});

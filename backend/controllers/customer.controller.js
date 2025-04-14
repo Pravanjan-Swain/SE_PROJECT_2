@@ -1,8 +1,8 @@
-import Customer from "../models/customer.model";
-import Publication from "../models/publication.model";
-import Subscription from "../models/subscription.model";
+import Customer from '../models/customer.model.js'
+import Publication from "../models/publication.model.js";
+import Subscription from "../models/subscription.model.js";
 
-const checkSubscription = async(req,res) => {
+export const checkSubscription = async(req,res) => {
     try{
         const customer = await Customer.findOne({user : req.user.id});
 
@@ -30,7 +30,7 @@ const checkSubscription = async(req,res) => {
     }
 }
 
-const updateSubscription = async (req,res) => {
+export const updateSubscription = async (req,res) => {
     try{
         const customer = await Customer.findOne({user : req.user.id});
 
@@ -65,32 +65,56 @@ const updateSubscription = async (req,res) => {
     }
 }
 
-const addSubscription = async (req,res) => {
-    try{
-        const {startDate,endDate,frequency,price} = req.body;
+export const addSubscription = async (req,res) => {
+    try {
+        const {startDate, endDate, frequency, price, publicationId} = req.body;
         
-        const customer = await Customer.findOne({user : req.user.id});
+        const customer = await Customer.findOne({user: req.user.id});
 
-        if(!customer){
+        if(!customer) {
             return res.status(404).json({
-                success : false,
-                message : "Customer not found"
+                success: false,
+                message: "Customer not found"
             });
         }
 
-        const 
+        const publication = await Publication.findById(publicationId);
+        
+        if(!publication) {
+            return res.status(404).json({
+                success: false,
+                message: "Publication not found"
+            });
+        }
+
+        const newSubscription = new Subscription({
+            customer: customer._id,
+            publication: publicationId,
+            startDate,
+            endDate,
+            frequency,
+            price
+        });
+
+        await newSubscription.save();
+
+        return res.status(201).json({
+            success: true,
+            message: "Subscription added successfully",
+            subscription: newSubscription
+        });
     }
     catch(err) {
         console.error(err.message);
-        res.status(500).json({
-            success : false,
-            message : "Server error",
-            error : err.message
-        })
+        return res.status(500).json({
+            success: false,
+            message: "Server error",
+            error: err.message
+        });
     }
 }
 
-const showPublications = async (req,res) => {
+export const showPublications = async (req,res) => {
     try{
         const publications = await Publication.find();
 
@@ -112,7 +136,7 @@ const showPublications = async (req,res) => {
 
 
 // make Payment // TODO
-const makePayment = async (req,res) => {
+export const makePayment = async (req,res) => {
     try{
 
     }
